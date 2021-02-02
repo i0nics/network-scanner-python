@@ -4,10 +4,13 @@
 <h1 align='center'> Network Scanner</h1>
 <p align='center'>Network Discovery | Traceroute | TCP and UDP Port Scanner</p>
 <h2 id='about'>About The Project</h2>
-
 * Developed network discovery tool that identifies all online interfaces that reside in host's LAN using Scapy
 * Built UDP-based traceroute program identifies IP addresses of all machines between source and destination
 * Wrote Python script and utilized Scapy to identify the status of transport layer ports such as TCP and UDP
+
+<h2 id='sc'>Screenshots</h2>
+<img src='Screenshots/network_discovery.png'>
+<img src='Screenshots/portscanner.png'>
 
 <h2 id='license'>License</h2>
 <p>Distributed under the MIT License.</p>
