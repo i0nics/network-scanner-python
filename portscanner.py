@@ -17,6 +17,7 @@ import argparse
 import socket
 
 
+# Return status of UDP port
 def udp_state(pkt):
     if ICMP in pkt:
         if pkt.getlayer(ICMP).type == 3 and pkt.getlayer(ICMP).code == 3:
@@ -33,7 +34,8 @@ def udp_state(pkt):
 
 def main():
     parser = argparse.ArgumentParser(description='Port Scanner')
-    parser.add_argument('--version', action='version', version='%(prog)s 1.0', help='Show Program\'s Version Number and Exit')
+    parser.add_argument('--version', action='version', version='%(prog)s 1.0',
+                        help='Show Program\'s Version Number and Exit')
     parser.add_argument('--target', help='Hostname or IP to scan', default='127.0.0.1')
     parser.add_argument('--port', help='Port [X] or Port Range [X-Y] to scan', default='0-1023')
     group = parser.add_mutually_exclusive_group()
@@ -43,16 +45,25 @@ def main():
     args, scan_list, port_range, dns = parser.parse_args(), dict(), list(), False
 
     try:
-        port_range = [int(i) if 0 <= int(i) <= 65535 else int('e') for i in args.port.split('-')] if '-' in args.port else [int(args.port)] if 0 <= int(args.port) <= 65535 else int('e')
-        int('e') if len(port_range) > 1 and port_range[0] > port_range[1] or len(port_range) > 2 else 0
+        # Check if port range is valid
+        port_range = [int(i) if 0 <= int(i) <= 65535 else int('e') for i in
+                      args.port.split('-')] if '-' in args.port else [int(args.port)] if 0 <= int(
+            args.port) <= 65535 else int('e')
+
+        # Check if exactly two numbers are provided for the range such that the first is lesser than the second
+        int('e') if len(port_range) == 1 or len(port_range) == 2 and port_range[0] > port_range[1] or len(port_range) > 2 else 0
+
+        # Set protocol
         proto = 'udp' if args.udp else 'tcp'
-        if len(port_range) > 1:
-            port_range = list(range(port_range[0], port_range[1] + 1))
-            random.shuffle(port_range)
+
+        # Add all port numbers to a list and randomly shuffle if the port range is valid
+        port_range = list(range(port_range[0], port_range[1] + 1))
+        random.shuffle(port_range)
         org_range = port_range.copy()
     except ValueError:
         sys.exit('ERROR: Invalid Port or Port Range')
 
+    # If user inputs IP Address, hostname is identified, otherwise IP address is identified
     try:
         if args.target[0].isdigit():
             target_ip, target_hostname = args.target, socket.gethostbyaddr(args.target)[0]
@@ -63,33 +74,49 @@ def main():
         sys.exit('Error: Invalid hostname or IP address')
 
     print(f'Scan type: {proto}\nTarget: {target_hostname} ({target_ip})\nPort(s): {args.port}')
+
+    # TCP Scan
     if proto == 'tcp':
         print('TCP Scanning....')
-        ans, unans = sr(IP(dst=target_ip)/TCP(sport=22434, dport=port_range), verbose=0, timeout=5)
+
+        # Create IP/TCP packet and send/receive
+        ans, unans = sr(IP(dst=target_ip) / TCP(sport=22434, dport=port_range), verbose=0, timeout=5)
+
+        # Check if port is open by checking for SYN-ACK packet. If it's not present, port is closed.
         for s, r in ans:
-            scan_list[r.sport] = 'Status: Open        Reason: Received TCP SYN-ACK' if r.getlayer(TCP).flags == 'SA' else 'Status: Closed      Reason: Received TCP RST'
+            scan_list[r.sport] = 'Status: Open        Reason: Received TCP SYN-ACK' if r.getlayer(
+                TCP).flags == 'SA' else 'Status: Closed      Reason: Received TCP RST'
         for s in unans:
             scan_list[s.dport] = 'Status: Filtered    Reason: No response'
 
+    # UDP Scan
     else:
         print('UDP Scanning....')
+
+        # Send a valid query only to port 53 and remove port 53 from the port_range list
         if 53 in port_range:
             port_range.remove(53)
-            ans, unans = sr(IP(dst=target_ip) / UDP(sport=22434, dport=53) / DNS(qd=DNSQR(qname="www.apple.com")), verbose=0, timeout=5)
+            ans, unans = sr(IP(dst=target_ip) / UDP(sport=22434, dport=53) / DNS(qd=DNSQR(qname="www.apple.com")),
+                            verbose=0, timeout=5)
             if len(ans) > 0:
                 for s, r in ans:
                     scan_list[r.sport] = udp_state(r)
             else:
                 for s in unans:
                     scan_list[s.dport] = 'Status: Open|Filtered     Reason: No response'
-        ans, unans = sr(IP(dst=target_ip) / UDP(sport=22434, dport=port_range) / Raw('Hello World'), verbose=0, timeout=5)
+
+        # Send a dummy text message to all ports other than port 53
+        ans, unans = sr(IP(dst=target_ip) / UDP(sport=22434, dport=port_range) / Raw('Hello World'), verbose=0,
+                        timeout=5)
         for s, r in ans:
             scan_list[r.sport] = udp_state(r)
         for s in unans:
             scan_list[s.dport] = 'Status: Open|Filtered     Reason: No response'
 
+    # Print the output of the scan in sorted order
     for i in sorted(org_range):
-        print(f'Port: {i}' + ' ' * 5 + scan_list[i]) if args.verbose else print(f'Port: {i}' + ' ' * 5 + scan_list[i]) if 'Open ' in scan_list[i] else 0
+        print(f'Port: {i}' + ' ' * 5 + scan_list[i]) if args.verbose else print(
+            f'Port: {i}' + ' ' * 5 + scan_list[i]) if 'Open ' in scan_list[i] else 0
 
 
 if __name__ == "__main__":
