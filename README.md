@@ -32,13 +32,26 @@
 <h3>Network Discovery</h3>
 
 ```
-usage: sudo ./networkdiscovery.py
+usage: ./networkdiscovery.py [-h] [--version]
+
+Network Discovery
+
+optional arguments:
+  -h, --help  show this help message and exit
+  --version   Show Program's Version Number and Exit
 ```
 
 <h3>Traceroute</h3>
 
 ```
-usage: sudo ./traceroute.py [HOSTNAME OR IP ADDRESS]
+usage: traceroute.py [-h] [--version] [--target TARGET]
+
+Traceroute
+
+optional arguments:
+  -h, --help       show this help message and exit
+  --version        Show Program's Version Number and Exit
+  --target TARGET  Hostname or IP
 ```
 
 <h3>Port Scanner</h3>
