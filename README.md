@@ -44,7 +44,7 @@ optional arguments:
 <h3>Traceroute</h3>
 
 ```
-usage: traceroute.py [-h] [--version] [--target TARGET]
+usage: ./traceroute.py [-h] [--version] [--target TARGET]
 
 Traceroute
 
