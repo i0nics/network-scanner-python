@@ -10,8 +10,14 @@
 * Wrote Python script and utilized Scapy to identify the status of transport layer ports such as TCP and UDP
 
 <h2 id='sc'>Screenshots</h2>
+
+<p>1) Network Discovery</p>
 <img src='Screenshots/network_discovery.png'>
+
+<p>2) Traceroute</p>
 <img src='Screenshots/traceroute.png'>
+
+<p>3) Port Scanner</p>
 <img src='Screenshots/port_scanner.png'>
 
 <h2 id='license'>License</h2>
