@@ -5,10 +5,6 @@
 <p align='center'>Network Discovery | Traceroute | TCP and UDP Port Scanner</p>
 <h2 id='about'>About The Project</h2>
 
-* Developed network discovery tool that identifies all online interfaces that reside in host's LAN using Scapy
-* Built UDP-based traceroute program identifies IP addresses of all machines between source and destination
-* Wrote Python script and utilized Scapy to identify the status of transport layer ports such as TCP and UDP
-
 <h2>1) Network Discovery</h2>
 <img src='Screenshots/network_discovery.png'>
 <p>This program lists all available interfaces present in the host’s LAN and uses Scapy to identify all online machines accessible through each of the localhost’s non-virtual interfaces. To achieve this, this program creates an ethernet frame that encapsulates an ARP packet. The Ethernet frame has its destination address set to the broadcast address while the ARP packet has the localhost's subnet address along with the CIDR notation. Finally, Scapy creates a list of ARP packets that are broadcasted to every IP address in the subnet and prints the MAC and IP addresses of the online machines which send a reply back to the localhost.</p>
