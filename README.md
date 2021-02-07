@@ -11,7 +11,8 @@
 
 <h2 id='sc'>Screenshots</h2>
 <img src='Screenshots/network_discovery.png'>
-<img src='Screenshots/portscanner.png'>
+<img src='Screenshots/traceroute.png'>
+<img src='Screenshots/port_scanner.png'>
 
 <h2 id='license'>License</h2>
 <p>Distributed under the MIT License.</p>
