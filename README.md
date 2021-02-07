@@ -32,13 +32,13 @@
 <h3>Network Discovery</h3>
 
 ```
-usage: ./networkdiscovery.py
+usage: sudo ./networkdiscovery.py
 ```
 
 <h3>Traceroute</h3>
 
 ```
-usage: ./traceroute.py
+usage: sudo ./traceroute.py <ENTER HOSTNAME OR IP ADDRESS>
 ```
 
 <h3>Port Scanner</h3>
