@@ -38,7 +38,7 @@ usage: sudo ./networkdiscovery.py
 <h3>Traceroute</h3>
 
 ```
-usage: sudo ./traceroute.py <ENTER HOSTNAME OR IP ADDRESS>
+usage: sudo ./traceroute.py [HOSTNAME OR IP ADDRESS]
 ```
 
 <h3>Port Scanner</h3>
