@@ -3,6 +3,14 @@
 <br>
 <h1 align='center'> Network Scanner</h1>
 <p align='center'>Network Discovery | Traceroute | TCP and UDP Port Scanner</p>
+
+<summary><h2 style="display: inline-block">Table of Contents</h2></summary>
+
+- [About The Project](#about)
+- [Requirements](#req)
+- [Usage](#start)
+- [License](#license)
+
 <h2 id='about'>About The Project</h2>
 
 <h3>Network Discovery</h3>
@@ -16,7 +24,39 @@
 <h3>Port Scanner</h3>
 <img src='Screenshots/port_scanner.png'>
 </p>This program identifies the status of transport layer ports. To accomplish this, it uses the argparse module to get info about the desired ports, target, protocol, etc. from the user and then checks for any invalid port ranges. The program also uses the socket module to check if the target is valid. Next, if the user chooses a TCP scan, an IP datagram containing a TCP SYN packet is sent to all the desired ports of the desired IP. If the program receives a TCP SYN-ACK packet back from the host, then the program determines that the port is open. If the program receives a TCP RST packet, then the port is determined to be closed. If no answer is received within 5 seconds, then the port is marked as filtered. If the user chooses a UDP scan and port 53 is included in the user's desired port range, then a UDP packet containing a DNS query to apple.com is sent. For all other ports, a UDP packet with a dummy payload is sent. If the program receives either a DNS or UDP reply, then the port is determined to be open. If the port receives an ICMP unreachable or ICMP port unreachable error, then the port is determined to be closed. If there is no response from the port, it is determined to be Open|Filtered.</p>
+<h2 id='req'>Requirements</h2>
 
+* [Python3](https://www.python.org)
+
+<h2 id='start'>Usage</h2>
+<h3>Network Discovery</h3>
+
+```
+usage: ./networkdiscovery.py
+```
+
+<h3>Traceroute</h3>
+
+```
+usage: ./traceroute.py
+```
+
+<h3>Port Scanner</h3>
+
+```
+usage: ./portscanner.py [-h] [--version] [--target TARGET] [--port PORT] [--tcp | --udp] [--verbose]
+
+Port Scanner
+
+optional arguments:
+  -h, --help       show this help message and exit
+  --version        Show Program's Version Number and Exit
+  --target TARGET  Hostname or IP to scan
+  --port PORT      Port [X] or Port Range [X-Y] to scan
+  --tcp            TCP port scan (mutually exclusive with --udp)
+  --udp            UDP port scan (mutually exclusive with --tcp)
+  --verbose        Verbose output (Print all ports, not just open ports)
+```
 <h2 id='license'>License</h2>
 <p>Distributed under the MIT License.</p>
 
