@@ -15,7 +15,7 @@
 
 <h3>Network Discovery</h3>
 <img src='Screenshots/network_discovery.png'>
-<p>This program lists all available interfaces present in the host’s LAN and uses Scapy to identify all online machines accessible through each of the localhost’s non-virtual interfaces. To achieve this, this program creates an ethernet frame that encapsulates an ARP packet. The Ethernet frame has its destination address set to the broadcast address while the ARP packet has the localhost's subnet address along with the CIDR notation. Finally, Scapy creates a list of ARP packets that are broadcasted to every IP address in the subnet and prints the MAC and IP addresses of the online machines which send a reply back to the localhost.</p>
+<p>This program lists all available interfaces that the local machine has and uses Scapy to identify all online machines within the local machine's LAN that are accessible through each of the local machine’s non-virtual interfaces. To achieve this, this program creates an ethernet frame that encapsulates an ARP packet. The Ethernet frame has its destination address set to the broadcast address while the ARP packet has the localhost's subnet address along with the CIDR notation. Finally, Scapy creates a list of ARP packets that are broadcasted to every IP address in the subnet and prints the MAC and IP addresses of the online machines which send a reply back to the localhost.</p>
 
 <h3>Traceroute</h3>
 <img src='Screenshots/traceroute.png'>
