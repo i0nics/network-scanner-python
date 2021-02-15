@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 # Programmer: Bikram Chatterjee
 # Network Discoverer
-# Description: This program lists all available interfaces present in localhost and uses Scapy to identify all online
-# machines accessible through each of the localhost’s non-virtual interfaces. To achieve this, this program creates
-# an ethernet frame which encapsulates an ARP packet. The ethernet frame has its destination address set to the
-# broadcast address while the ARP packet has the localhost's subnet address along with the CIDR notation. Finally,
-# Scapy creates a list of ARP packets which are broadcasted to every IP address in the subnet and prints the MAC and IP
-# addresses of the online machines which send a reply back to the localhost.
+'''
+Description: This program lists all available interfaces present in localhost and uses Scapy to identify all online
+machines accessible through each of the localhost’s non-virtual interfaces. To achieve this, this program creates
+an ethernet frame which encapsulates an ARP packet. The ethernet frame has its destination address set to the
+broadcast address while the ARP packet has the localhost's subnet address along with the CIDR notation. Finally,
+Scapy creates a list of ARP packets which are broadcasted to every IP address in the subnet and prints the MAC and IP
+addresses of the online machines which send a reply back to the localhost.
+'''
 from scapy.all import *
 import netifaces
 
