@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
 # Programmer: Bikram Chatterjee
 # Port Scanner
-# Description: This program identifies the status of transport layer ports. To accomplish this, this program uses the
-# argparse module to get info about the desired ports, target, protocol etc from the user and then checks for any
-# invalid port ranges. The program also uses the socket module to check if the target is valid. Next, if the user
-# chooses a TCP scan, an IP datagram containing a TCP SYN packet is sent to all the desired ports of the desired IP.
-# If the program receives a TCP SYN-ACK packet back from the host, then the program determines that the port is open.
-# If the program receives a TCP RST packet, then the port is determined to be closed. If no answer is received within
-# 5 seconds, then the port is marked as filtered. If the user chooses an UDP scan and port 53 is included in the user's
-# desired port range, then an UDP packet containing a DNS query to apple.com is sent. For all other ports, an UDP packet
-# with a dummy payload is sent. If the program receives either a DNS or UDP reply, then the port is determined to be
-# open. If the port receives an ICMP unreachable or ICMP port unreachable error, then the port is determined to be
-# closed. If there is no response from the port, it is determined to be Open|Filtered.
+''' 
+This program identifies the status of transport layer ports. To accomplish this, this program uses the
+argparse module to get info about the desired ports, target, protocol etc from the user and then checks for any
+invalid port ranges. The program also uses the socket module to check if the target is valid. Next, if the user
+chooses a TCP scan, an IP datagram containing a TCP SYN packet is sent to all the desired ports of the desired IP.
+If the program receives a TCP SYN-ACK packet back from the host, then the program determines that the port is open.
+If the program receives a TCP RST packet, then the port is determined to be closed. If no answer is received within
+5 seconds, then the port is marked as filtered. If the user chooses an UDP scan and port 53 is included in the user's
+desired port range, then an UDP packet containing a DNS query to apple.com is sent. For all other ports, an UDP packet
+with a dummy payload is sent. If the program receives either a DNS or UDP reply, then the port is determined to be
+open. If the port receives an ICMP unreachable or ICMP port unreachable error, then the port is determined to be
+closed. If there is no response from the port, it is determined to be Open|Filtered.
+'''
 from scapy.all import *
 import argparse
 import socket
@@ -67,6 +69,7 @@ def main():
     try:
         if args.target[0].isdigit():
             target_ip, target_hostname = args.target, socket.gethostbyaddr(args.target)[0]
+        
         else:
             target_ip = socket.gethostbyname(args.target)
             target_hostname = socket.gethostbyaddr(target_ip)[0]
@@ -86,6 +89,7 @@ def main():
         for s, r in ans:
             scan_list[r.sport] = 'Status: Open        Reason: Received TCP SYN-ACK' if r.getlayer(
                 TCP).flags == 'SA' else 'Status: Closed      Reason: Received TCP RST'
+        
         for s in unans:
             scan_list[s.dport] = 'Status: Filtered    Reason: No response'
 
@@ -110,6 +114,7 @@ def main():
                         timeout=5)
         for s, r in ans:
             scan_list[r.sport] = udp_state(r)
+        
         for s in unans:
             scan_list[s.dport] = 'Status: Open|Filtered     Reason: No response'
 
