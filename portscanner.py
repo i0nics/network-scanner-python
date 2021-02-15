@@ -103,6 +103,7 @@ def main():
             if len(ans) > 0:
                 for s, r in ans:
                     scan_list[r.sport] = udp_state(r)
+                    
             else:
                 for s in unans:
                     scan_list[s.dport] = 'Status: Open|Filtered     Reason: No response'
@@ -110,6 +111,7 @@ def main():
         # Send a dummy text message to all ports other than port 53
         ans, unans = sr(IP(dst=target_ip) / UDP(sport=22434, dport=port_range) / Raw('Hello World'), verbose=0,
                         timeout=5)
+        
         for s, r in ans:
             scan_list[r.sport] = udp_state(r)
         
