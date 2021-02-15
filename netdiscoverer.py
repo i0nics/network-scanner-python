@@ -23,24 +23,30 @@ for i in interfaces:
 
 for i in interfaces:
     try:
+        
         # Get The Size of The Interface's Subnet in CIDR Notation via Netifaces
         cidr = sum(bin(int(x)).count('1') for x in netifaces.ifaddresses(i)[netifaces.AF_INET][0].get('netmask').split('.'))
         print(f'\n* {i}:' + ' ' * (max_space - len(i)), f'{get_if_hwaddr(i)}   IP = {get_if_addr(i)}/{cidr}', end='')
         non_virt_ifaces.append(i) if get_if_hwaddr(i) != '00:00:00:00:00:00' else 0  # Filter Non-Virtual Interfaces
+        
     except (KeyError, Scapy_Exception) as e:
         print(f'\n* {i}:' + ' ' * (max_space - len(i)), f'00:00:00:00:00:00   IP = {get_if_addr(i)} ', end='')
 
 # Identify All Online Interfaces Accessible Through The Non-Virtual Interfaces of Local Machine
 for i in non_virt_ifaces:
     print(f'\n----\nScanning on Interface {i}\n----\nResults:')
+    
     # Get The Subnet Size of The Interface Used to Probe The Network in CIDR notation via Netifaces
     cidr = sum(bin(int(x)).count('1') for x in netifaces.ifaddresses(i)[netifaces.AF_INET][0].get('netmask').split('.'))
+    
     # Encapsulate ARP packet in Ethernet Frame with Destination MAC Address Set to Broadcast Address
     request = Ether(dst='ff:ff:ff:ff:ff:ff') / ARP(pdst=f'{get_if_addr(i)}/{cidr}')
+    
     # Send and Receive the Data Link Layer Packets
     # Timeout to Receive Packets Set to 2 seconds and Unanswered Packets Are Sent One More Time via Retry
     # Received Packets are Separated into Answered and Unanswered Packets
     ans, unans = srp(request, timeout=2, retry=1)
+    
     print('Hosts Responding:', len(ans), '\nHosts Not Responding:', len(unans))
     for sent, received in ans:
         print(f'MAC = {received.hwsrc}   IP = {received.psrc}')
