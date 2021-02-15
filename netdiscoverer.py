@@ -2,7 +2,7 @@
 # Programmer: Bikram Chatterjee
 # Network Discoverer
 '''
-Description: This program lists all available interfaces present in localhost and uses Scapy to identify all online
+This program lists all available interfaces present in localhost and uses Scapy to identify all online
 machines accessible through each of the localhost’s non-virtual interfaces. To achieve this, this program creates
 an ethernet frame which encapsulates an ARP packet. The ethernet frame has its destination address set to the
 broadcast address while the ARP packet has the localhost's subnet address along with the CIDR notation. Finally,
