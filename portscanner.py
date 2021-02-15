@@ -36,7 +36,7 @@ def main():
     parser = argparse.ArgumentParser(description='Port Scanner')
     parser.add_argument('--version', action='version', version='%(prog)s 1.0',
                         help='Show Program\'s Version Number and Exit')
-    parser.add_argument('--target', help='Hostname or IP to scan', default='127.0.0.1')
+    parser.add_argument('--target', help='Hostname or IP to scan', default='google.com')
     parser.add_argument('--port', help='Port [X] or Port Range [X-Y] to scan', default='0-1023')
     group = parser.add_mutually_exclusive_group()
     group.add_argument('--tcp', action="store_true", help='TCP port scan (mutually exclusive with --udp)', default=True)
